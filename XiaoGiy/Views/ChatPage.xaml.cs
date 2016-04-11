@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using Windows.Data.Json;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.Web.Http;
 using XiaoGiy.Models;
 using XiaoGiy.Utils;
+using XiaoGiy.ViewModels;
 
 namespace XiaoGiy.Views {
     public sealed partial class ChatPage : Page {
+        private ChatViewModel ChatVM = App.ChatVM;
+
         public ChatPage() {
             InitializeComponent();
         }
@@ -58,8 +62,15 @@ namespace XiaoGiy.Views {
             }
         }
 
-        private void SendButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e) {
+        private void SendButton_Click(object sender, RoutedEventArgs e) {
             SendMessage();
+        }
+
+        private void BackButton_Click(object sender, RoutedEventArgs e) {
+            //TODO: Alert
+            Frame rootFrame = Window.Current.Content as Frame;
+            if (rootFrame == null) return;
+            rootFrame.GoBack();
         }
     }
 }

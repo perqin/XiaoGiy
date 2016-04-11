@@ -102,6 +102,7 @@
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Utils\ApiKey.cs" />
     <Compile Include="Utils\C.cs" />
+    <Compile Include="Utils\Converters.cs" />
     <Compile Include="ViewModels\ChatViewModel.cs" />
     <Compile Include="ViewModels\MeViewModel.cs" />
     <Compile Include="Views\ChatPage.xaml.cs">

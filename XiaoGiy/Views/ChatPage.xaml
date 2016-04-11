@@ -4,9 +4,18 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:XiaoGiy.Views"
     xmlns:models="using:XiaoGiy.Models"
+    xmlns:utils="using:XiaoGiy.Utils"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" RequestedTheme="Dark">
+    <Page.Resources>
+        <utils:IntToLeftVisibilityConverter x:Key="I2LvConverter"/>
+        <utils:IntToRightVisibilityConverter x:Key="I2RvConverter"/>
+        <utils:IntToForegroundConverter x:Key="I2FgConverter"/>
+        <utils:IntToBackgroundConverter x:Key="I2BgConverter"/>
+        <utils:StringTrimConverter x:Key="STConverter"/>
+        <utils:IntToHorizontalAlignmentConverter x:Key="I2HAConverter"/>
+    </Page.Resources>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
@@ -18,22 +27,29 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <TextBlock TextWrapping="Wrap" Text="小基" VerticalAlignment="Center" Style="{StaticResource SubheaderTextBlockStyle}" Margin="16,0,0,0" Foreground="#FF7008B2"/>
-        <AppBarButton Icon="Back" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="48" Width="48" RequestedTheme="Dark" Background="#FF645A6A"/>
-        <ListView x:Name="ChatListView" Grid.Row="1" Grid.ColumnSpan="2" Margin="8,0">
+        <AppBarButton Icon="Back" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="48" Width="48" RequestedTheme="Dark" Background="#FF645A6A" Click="BackButton_Click"/>
+        <ListView x:Name="ChatListView" ItemsSource="{x:Bind ChatVM.ChatMessages}" Grid.Row="1" Grid.ColumnSpan="2" Margin="8,0" SelectionMode="None">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="Padding" Value="0,0,0,8"/>
+                </Style>
+            </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
-                <!--<DataTemplate x:DataType="vm:Todo">-->
                 <DataTemplate x:DataType="models:MessageModel">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="48"/>
+                            <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="1*"/>
-                            <ColumnDefinition Width="48"/>
+                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
-                        <Image Grid.Column="0" Source="ms-appx:///Assets/giy_avatar.png" Width="48" Height="48"/>
-                        <TextBlock Grid.Column="0" Text="基" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        <TextBlock Grid.Column="1"/>
-                        <Image Grid.Column="2" Source="ms-appx:///Assets/me_avatar.png" Width="48" Height="48"/>
-                        <TextBlock Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Image Grid.Column="0" Source="ms-appx:///Assets/giy_avatar.png" Width="48" Height="48" Visibility="{x:Bind Who,Converter={StaticResource I2LvConverter},Mode=OneWay}"/>
+                        <TextBlock Grid.Column="0" Text="基" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{x:Bind Who,Converter={StaticResource I2FgConverter},Mode=OneWay}" Visibility="{x:Bind Who,Converter={StaticResource I2LvConverter},Mode=OneWay}" TextTrimming="Clip" Width="24" Height="24" TextAlignment="Center" FontSize="18.667"/>
+                        <Border Grid.Column="1" Background="{x:Bind Who,Converter={StaticResource I2BgConverter},Mode=OneWay}" Margin="8,0" Padding="8" HorizontalAlignment="{x:Bind Who,Converter={StaticResource I2HAConverter},Mode=OneWay}">
+                            <TextBlock Text="{x:Bind Content,Mode=OneWay}" Foreground="{x:Bind Who,Converter={StaticResource I2FgConverter},Mode=OneWay}" FontSize="16" TextWrapping="WrapWholeWords"/>
+                        </Border>
+                        <Image Grid.Column="2" Source="ms-appx:///Assets/me_avatar.png" Width="48" Height="48" Visibility="{x:Bind Who,Converter={StaticResource I2RvConverter},Mode=OneWay}"/>
+                        <TextBlock Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{x:Bind Who,Converter={StaticResource I2FgConverter},Mode=OneWay}" Text="{x:Bind Who,Converter={StaticResource STConverter},Mode=OneWay}" Visibility="{x:Bind Who,Converter={StaticResource I2RvConverter},Mode=OneWay}" TextTrimming="Clip" Width="24" Height="24" TextAlignment="Center" FontSize="18.667"/>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>

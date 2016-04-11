@@ -1,11 +1,15 @@
-﻿namespace XiaoGiy.Models {
-    public class MessageModel {
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+
+namespace XiaoGiy.Models {
+    public class MessageModel : INotifyPropertyChanged {
         public string Content {
             get {
                 return content;
             }
             set {
                 content = value;
+                OnPropertyChanged();
             }
         }
 
@@ -15,6 +19,7 @@
             }
             set {
                 type = value;
+                OnPropertyChanged();
             }
         }
 
@@ -24,6 +29,7 @@
             }
             set {
                 url = value;
+                OnPropertyChanged();
             }
         }
 
@@ -33,6 +39,7 @@
             }
             set {
                 who = value;
+                OnPropertyChanged();
             }
         }
 
@@ -40,5 +47,11 @@
         private int type = 0;
         private string url = "";
         private int who = 0;
+
+        public event PropertyChangedEventHandler PropertyChanged = delegate { };
+
+        public void OnPropertyChanged([CallerMemberName] string propertyName = null) {
+            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }
